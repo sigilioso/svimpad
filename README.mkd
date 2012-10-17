@@ -1,0 +1,19 @@
+# svimpad: Springpad Vim plugin
+
+Project to publish notes to Springpad directly from Vim using [Springpad API](http://springpadit.com/developers/).
+
+**It is not stable yet**, you can see the unstable version on _devel_ branch.
+
+## Requirements
+
+- Vim 7 compiled with python+
+- oauth
+- pygments
+
+## Configuration
+
+(...)
+
+## Ussage
+
+(...)
