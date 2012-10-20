@@ -20,13 +20,16 @@ endif
 
 let s:script_dir = expand("<sfile>:p:h")
 
-function! Springpad()
+function! Springpad(...)
 
 python << EOF
 
 import vim
 import sys
 import os
+from tempfile import gettempdir
+from time import time
+from string import strip
 import pygments
 from pygments.lexers import TextLexer, get_lexer_by_name
 from pygments.formatters import HtmlFormatter
@@ -35,6 +38,15 @@ base_dir = os.path.join(vim.eval('s:script_dir'), 'svimpad')
 sys.path.append(base_dir)
 
 from springpad_client import auth_springpad_client
+
+def vim_input(message=''):
+    """
+    Get input from user showing message.
+    """
+    vim.command('call inputsave()')
+    vim.command('let user_input = input("{0}: ")'.format(message))
+    vim.command('call inputrestore()')
+    return vim.eval('user_input')
 
 client = auth_springpad_client()
 buffer_content = '\n'.join(vim.current.buffer[:])
@@ -47,14 +59,37 @@ try:
     lexer = get_lexer_by_name(filetype)
 except:
     lexer = TextLexer()
+
 # Highlight the note
 note = pygments.highlight(buffer_content, lexer, formatter)
 
-# Publish to springpad
-client.spring_note('Note from Vim', note)
+# Get title, tags and extra information
+if vim.eval('a:1'):
+    title = vim_input('Introduce the title')
+    tags = map(strip, vim_input('Introduce tags (comma separated)').split(','))
+    extra = vim_input('Introduce extra information')
+else:
+    title = vim.eval("expand('%:t')")
+    tags = [vim.eval('a:{0}'.format(i)) for i in range(2, int(vim.eval('a:0')) + 1)]
+    extra = None
 
+# Append extra information if provided
+if extra:
+    note = '<br><hr><br>'.join((pygments.highlight(extra, TextLexer(), formatter),
+            note))
+
+# Publish to springpad
+try:
+    client.spring_note(title=title, tags=tags, text=note)
+except:
+    vim.command('redraw')
+    print 'Error publishing to Springpad :-('
+else:
+    vim.command('redraw')
+    print 'Done!'
 EOF
 
 endfunction
 
-command! -nargs=0 Springpad call Springpad()
+command! -nargs=* Springpad call Springpad('True', <f-args>)
+command! -nargs=* Springpadfast call Springpad('', <f-args>)
