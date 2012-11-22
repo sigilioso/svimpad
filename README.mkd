@@ -18,23 +18,21 @@ this I'll try to find a better solution as soon as possible.
 
 ## Configuration
 
-1. Clone de source code
+- Clone de source code
 
 ```
 git clone git@github.com:sigilioso/svimpad.git
 ```
 
-2. Let the plugin access to your Springpad account
+- Let the plugin access to your Springpad account
 
 ```
 cd svimpad/plugin
 python setup_svimpad.py
 ```
-
 and follow the instructions.
 
-3. Install the plugin
-
+- Install the plugin
     - Copy the directories `plugin` and `doc` to your vim directory (usually
     `.vim/`).
     - Go to `doc` directory inside your vim directory, run vim and execute
