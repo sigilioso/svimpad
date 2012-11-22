@@ -1,19 +1,50 @@
 # svimpad: Springpad Vim plugin
 
-Project to publish notes to Springpad directly from Vim using [Springpad API](http://springpadit.com/developers/).
+Project to publish notes to Springpad directly from Vim using
+[Springpad API](http://springpadit.com/developers/).
 
-**It is not stable yet**, you can see the unstable version on _devel_ branch.
+## Springpad development version notes
+
+As this is an application which uses Springpad API it needs the to
+authenticate through springpad to work. In order to authenticate you need
+a Springpad Developer Key setted in `svimpad/settings.py` file. Sorry for
+this I'll try to find a better solution as soon as possible.
 
 ## Requirements
 
-- Vim 7 compiled with python+
-- oauth
-- pygments
+- Vim 7.3 compiled with python+
+- oauth (python library)
+- pygments (python library)
 
 ## Configuration
 
-(...)
+1. Clone de source code
+
+```
+git clone git@github.com:sigilioso/svimpad.git
+```
+
+2. Let the plugin access to your Springpad account
+
+```
+cd svimpad/plugin
+python setup_svimpad.py
+```
+
+and follow the instructions.
+
+3. Install the plugin
+
+    - Copy the directories `plugin` and `doc` to your vim directory (usually
+    `.vim/`).
+    - Go to `doc` directory inside your vim directory, run vim and execute
+    `:helptags .` to load documentation tags.
 
 ## Ussage
 
-(...)
+- **:Springpad** command will publish a note from the current file with some extra
+information (run `:help :Springpad` for more help).
+- **:Springpadfast** command will publish a note from the current file with less
+extra information (run `:help :Springpadfast` for more help).
+- Run `:help svimpad` for more details.
+
